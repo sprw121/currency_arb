@@ -1,0 +1,5 @@
+Computed using test data, not valid
+CADUSD
+EURCAD
+USDEUR
+------
