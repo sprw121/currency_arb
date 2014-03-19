@@ -1,32 +1,7 @@
 #include "graph.h"
 
-/* Compares the current shortest path to node i to the shortest path to node j + the edge from j to i.
-   Changes the current path length to this sum and change the predecessor to i to j if the latter
-   is smaller.
-*/
-void relax(node* input, int i){
-	int last_step = input[i].predecessor;
-	double* from_from = input[i].from;
 
-	for(int j = 0; j < NUM_CURRENCIES; j++){
-		double comp = input[j].cur_dist + from_from[j];
-		if(input[i].cur_dist > comp) {
-			input[i].cur_dist = comp;
-			input[i].predecessor = j;
-		}
-	}
-}
-
-// Relaxes all nodes (j) in the graph N-1 times (i).
-// Computes the shortest path from node 0 to node j with at most i back steps on the ith iteration.
-// I believe this can be optimized to run in N*(N-1)/2
-void bellman_ford(node* input){
-	node* temp;
-
-	for(int i = 0; i < NUM_CURRENCIES-1; i++)
-		for(int j = 0; j < NUM_CURRENCIES; j++)
-			relax(input, j);
-}	
+void bellman_ford(node*);
 
 /* Backtracks along the predecessor chain to find the index of where a negative cycle beings.
    Uses a local bitmap to determine whether we have visited a node in this iteration, thus
