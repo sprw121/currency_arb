@@ -30,7 +30,7 @@ void relax_backward(node* input){
 
 // Relaxes all nodes (j) in the graph N-1 times (i).
 // Computes the shortest path from node 0 to node j with at most i back steps on the ith iteration.
-// I believe this can be optimized to run in N*(N-1)/2
+// Optimized to run in N*(N-1)/2 through yen's optimization
 void bellman_ford(node* input){
 	for(int i = 0; i < NUM_CURRENCIES/2; i++){
 		relax_fordward(input);

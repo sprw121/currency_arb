@@ -1,5 +1,5 @@
 import json
-import urllib2
+import requests
 
 # Takes the results from results.txt and makes a request to yahoo
 # for the includes exchange rates. Verifies the profit calculated
@@ -33,9 +33,9 @@ for cycle in cycles:
 	query = '%2C'.join(formatted_pairs)
 	
 	url = base_url + query + end_url
-	
-	res = urllib2.urlopen(url)
-	parsed_data = json.load(res)
+
+	res = requests.get(url)
+	parsed_data = res.json()
 
 	exchange_rates = dict()
 
@@ -48,17 +48,20 @@ for cycle in cycles:
 
 	query = '%2C'.join(formatted_reverse)
 
-	url = base_url + query + end_url
-	res = urllib2.urlopen(url)
-	parsed_data = json.load(res)
-	
-	data = parsed_data["query"]["results"]["rate"]
+	if query != '':
+		url = base_url + query + end_url
+		print url
+		res = requests.get(url)
+		parsed_data = res.json()
+		
 
-	if(data.has_key("Name")):
-		exchange_rates[data["id"][3:6]+data["id"][0:3]] = 1/float(data["Ask"]) 
-	else:
-		for x in data["query"]["results"]["rate"]:
-			exchange_rates[x["id"][3:6]+x["id"][0:3]] = 1/float(x["Ask"])
+		data = parsed_data["query"]["results"]["rate"]
+
+		if(data.has_key("Name")):
+			exchange_rates[data["id"][3:6]+data["id"][0:3]] = 1/float(data["Ask"]) 
+		else:
+			for x in data["query"]["results"]["rate"]:
+				exchange_rates[x["id"][3:6]+x["id"][0:3]] = 1/float(x["Ask"])
 
 	profit = 1
 
